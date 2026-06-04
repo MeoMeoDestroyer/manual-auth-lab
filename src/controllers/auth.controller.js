@@ -62,20 +62,18 @@ export const isLoggedIn = (req,res,next) => {
    if (!req.user) {
         return res.redirect("/login?errors=Please log in first");
     }
-    next(); 
+    return next(); 
 };
-export const hasRole = (role) => {
-    return (req, res, next) => {
-        if (!req.user || req.user.role !== role) {
+export const hasRole = (role) =>  (req, res, next) => {
+        if (!req.session.user || req.session.user.role !== role) {
             return res.redirect("/login?errors=Access denied");
         }
-        next();
+        return next();
     };
-};
 
 export const logout = (req, res) => {
     req.session.destroy(() => {
-        return res.redirect("/login");
+         res.redirect("/login");
     });
 };
 
